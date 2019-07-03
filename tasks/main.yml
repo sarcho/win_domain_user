@@ -1,0 +1,23 @@
+---
+# tasks file for win_domain_user
+- name: Create groups on the Domain Controller
+  win_domain_group:
+    name: "{{ item.group_name }}"
+    scope: "{{ item.group_scope }}"
+    state: present
+  loop: "{{ user_info }}"
+
+- name: Create user accounts on the Domain Controller
+  win_domain_user:
+    name: "{{ item.name }}"
+    firstname: "{{ item.firstname }}"
+    surname: "{{ item.surname }}"
+    password: "{{ item.password }}"
+    groups: "{{ item.group_name }}"
+    email: '"{{item.name}}"@ad3522.example.opentlc.com'
+    state: present
+  loop: "{{ user_info }}"
+
+#- debug:
+#    msg: 'This is a var "{{ item.group_name }}"'
+#  loop: "{{ user_info }}"
